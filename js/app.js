@@ -1,126 +1,148 @@
-// proyecto gasto semanal la idea con este proyecto es ir calculando un presupuesto y que el programa me valla avisando cuando el presupuesto este bajo y cuando este pasado del presupuesto para ello utilizaremos clases de EC6 sera asi:
-
-// variables
-// 1
-// let presupuestoUsuario = prompt('Cual es tu presupuesto');
-// const formulario = document.getElementById('agregar-gasto');
-// let cantidadPresupuesto;
-
-// clases
-
-// class Presupuesto {
-
-//     constructor(presupuesto) {
-//         this.presupuesto = Number(presupuesto);
-//         this.restante = Number(presupuesto);
-
-
-//     }
-
-//     restante(cantidad = 0) {
-//         return this.restante -= number(cantidad);
-
-//     }
-// }
-// esta clase me va a mostrar todo loque se agregue y guarde en el html
-// class Interfaz {
-
-//     insertarPresupuesto(cantidad) {
-//         creo unos selectores para insertar la cantidad en los presupuesto y restante
-//         const presupuestoSpam = document.querySelector('span#total');
-//         const restanteSpam = document.querySelector('span#restante');
-
-//         presupuestoSpam.innerHTML = `${cantidad}`;
-//         restanteSpam.innerHTML = `${cantidad}`;
-
-
-//     }
-
-//     mensajeformulario(mensaje, tipo) {
-//         let divMensaje = document.createElement('div');
-//         divMensaje.classList.add('text-center', 'alert');
-//         chequeando que se llene el formulario y me de mensaje de error si hay un problema y si no que continue
-//         if (tipo === 'error') {
-//             divMensaje.classList.add('alert-danger');
-
-//         } else {
-//             divMensaje.classList.add('alert-success');
-
-//         }
-//         creo elmensaje e inserto el mensaje en el html
-//         divMensaje.appendChild(document.createTextNode(mensaje));
-//         inserto en el DOM .lo insterto antes del formulario 
-//         document.querySelector('.primario').insertBefore(divMensaje, formulario);
-//         formulario.reset();
-
-
-
-//         setTimeout(function() {
-
-//             document.querySelector('.primario .alert').remove();
-
-
-//         }, 3000)
-//     }
-
-//     imprimirmensaje(nombre,cantidad){
-
-
-
-//     }
-
-// }
+// Creo las variables
+let presupuestoUsuario = prompt('Cual es tu presupuesto');
+let formulario = document.querySelector('#agregar-gasto');
+let cantidadpresupuesto;
 
 
 
 
+// Creo las Clases
+// 2 TOMOS LO VALORES DEL PRESUPUESTO Y RESTANTE
+class Presupuesto {
+    constructor(presupuesto) {
+
+        this.presupuesto = Number(presupuesto);
+        this.restante = Number(presupuesto);
+
+    }
+
+    presupuestoRestante(cantidad = 0) {
+        return this.restante -= cantidad;
+    }
+}
 
 
-// eventos
+// 3 ACA COLOCO LOS ELEMENTOS PARA MOSTRAR AL USUARIO
+class Interfaz {
 
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     creo una condicion para que no meinicie la aplicacion si no hay valores en el prompt
-
-//     if (presupuestoUsuario === null || presupuestoUsuario === '') {
-
-//         window.location.reload();
-//     } else {
-//         creo una instancia para mi class presupuesto y le paso el valor del prompt
-
-//         cantidadPresupuesto = new Presupuesto(presupuestoUsuario);
-
-//         creo una instancia para mi interfaz y la paso el valor que ya he tomado de la cantidad del prompt
-//         let UI = new Interfaz();
-//         UI.insertarPresupuesto(cantidadPresupuesto.presupuesto);
-
-//     }
-
-
-
-
-// })
-
-// formulario.addEventListener('submit', function(e) {
-//     e.preventDefault();
-//     const nombreGasto = document.getElementById('gasto').value;
-//     const nombreCantidad = document.getElementById('cantidad').value;
-
-//     let UI = new Interfaz();
-
-//     if (nombreGasto === '' || nombreCantidad === '') {
-
-
-//         UI.mensajeformulario('Hubo un error ', 'error');
-
-//     } else {
-
-
-//         UI.mensajeformulario('Correcto', 'correcto');
-//         UI.imprimirmensaje(nombreGasto, nombreCantidad);
-
-//     }
+    // INSERTO LOS VALORES DEL PROMPT EN EL HTML 
+    presupuestoCantidad(cantidad) {
 
 
 
-// });
+            let spanPresupuesto = document.querySelector('span#total');
+            let spanRestante = document.querySelector('span#restante');
+
+            spanPresupuesto.innerHTML = `${cantidad}`;
+            spanRestante.innerHTML = `${cantidad}`;
+
+
+
+
+        }
+        // CREO UN MENSAJE DE ERROR Y CORRECTO EN EL HTML
+    mensajeInterfaz(mensaje, tipo) {
+
+            let div = document.createElement('div');
+            div.classList.add('text-center', 'alert');
+
+            if (tipo == 'error') {
+                div.classList.add('alert-danger');
+
+            } else {
+                div.classList.add('alert-success');
+
+            }
+            div.innerHTML = `
+
+                 ${mensaje}
+
+    `
+
+            document.querySelector('.primario').insertBefore(div, formulario);
+
+            setTimeout(function() {
+                let error = document.querySelector('.alert').remove();
+
+
+            }, 3000)
+
+        }
+        //  AGREGO LOS VALORES DE TOMADOS DEL "SUMIT" AL HTML DE LISTADO
+    agregarListado(nombre, cantidad) {
+        // ELEMENTO PADRE PARA INSERTAR EL HTML
+        let listadoGastos = document.querySelector('#gastos ul');
+
+        let li = document.createElement('li');
+        li.className = 'List-group-item d-flex justify-content-between aling-items-center';
+
+        li.innerHTML = `
+        ${nombre} 
+       <span class= "badge badge-primary badge-pill">$ ${cantidad} `;
+
+
+        listadoGastos.appendChild(li);
+
+
+
+    }
+    presupuestoRestante(cantidad) {
+
+        const restante = document.querySelector('span#restante');
+        const PresupuestoRestanteUsuario = cantidadpresupuesto.presupuestoRestante(cantidad);
+
+        restante.innerHTML = `${PresupuestoRestanteUsuario}`;
+    }
+
+}
+
+
+// Creo los Event Listener
+
+// 1 CREO UN EVENTO AL INICIO DE LA APP PARA QUE NO ABRA SI EL PROMPT ESTA VACIO
+document.addEventListener('DOMContentLoaded', function() {
+
+        if (presupuestoUsuario === null || presupuestoUsuario === '') {
+            window.location.reload();
+
+
+        } else {
+            cantidadpresupuesto = new Presupuesto(presupuestoUsuario);
+            const UI = new Interfaz();
+            UI.presupuestoCantidad(presupuestoUsuario);
+        }
+
+
+
+    })
+    // LEO LOS VALORES DE LOS CAMPOS Y AÑADO LA INTERFAZ DESDE ACA
+formulario.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const nombreGasto = document.querySelector('#gasto').value;
+    const nombreCantidad = document.querySelector('#cantidad').value;
+    // CREO UNA INTERFAZ AL USUARIO PARA MOSTRAR LOS VALORES 
+    const UI = new Interfaz();
+
+    if (nombreGasto === '' || nombreCantidad === '') {
+
+
+        UI.mensajeInterfaz('Hubo un error', 'error');
+
+
+    } else {
+
+
+        UI.mensajeInterfaz('Correcto', 'correcto');
+        UI.agregarListado(nombreGasto, nombreCantidad);
+        UI.presupuestoRestante(nombreCantidad);
+
+
+
+
+    }
+
+
+
+
+
+})
