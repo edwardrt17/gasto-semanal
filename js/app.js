@@ -92,8 +92,34 @@ class Interfaz {
         const PresupuestoRestanteUsuario = cantidadpresupuesto.presupuestoRestante(cantidad);
 
         restante.innerHTML = `${PresupuestoRestanteUsuario}`;
+
+        this.comprobarPresupuesto();
     }
 
+    // aca cambio de color el cuadro de restante si esta al 25 % y al 50% del presupuesto
+    comprobarPresupuesto() {
+        const presupuestoTotal = cantidadpresupuesto.presupuesto;
+        const presupuestoRestante = cantidadpresupuesto.restante;
+
+
+        if ((presupuestoTotal / 4 > presupuestoRestante)) {
+            const restante = document.querySelector('.restante');
+            restante.classList.remove('alert-success', 'alert-warning');
+            restante.classList.add('alert-danger');
+
+
+        } else if ((presupuestoTotal / 2 > presupuestoRestante)) {
+
+            const restante = document.querySelector('.restante');
+            restante.classList.remove('alert-success');
+            restante.classList.add('alert-warning');
+
+
+        }
+
+
+
+    }
 }
 
 
@@ -135,6 +161,8 @@ formulario.addEventListener('submit', function(e) {
         UI.mensajeInterfaz('Correcto', 'correcto');
         UI.agregarListado(nombreGasto, nombreCantidad);
         UI.presupuestoRestante(nombreCantidad);
+
+
 
 
 
